@@ -1,0 +1,67 @@
+syntax = "proto3";
+
+option java_multiple_files = false;
+option java_package = "pb";
+option java_outer_classname = "plagiarismDetectionServerImplBase";
+
+option go_package = "/pb";
+package plagiarism_detection;
+
+enum language {
+  python3 = 0;
+  cpp = 1;
+  java = 2;
+}
+
+message DuplicateCheckRequest {
+  uint64 labID = 1;
+  language lan = 2;
+}
+
+message DuplicateCheckResponse {
+  message DuplicateCheckResponseValue {
+    message Comparsion {
+      uint64 user_id = 1;
+      uint64 another_user_id = 2;
+      string html_file_name = 3;
+      int32 similarity = 4;
+    }
+    repeated Comparsion comparisions = 1;
+  }
+  DuplicateCheckResponseValue comparision = 1;
+  string time_stamp = 2;
+}
+
+message ViewReportRequest {
+  uint64 lab_id = 1;
+  string time_stamp = 2;
+  string html_file_name = 3;
+}
+
+message ViewReportResponse {
+  string html_file_content = 1;
+}
+
+message GenerateTestFilesForDuplicateCheckRequest {
+  string code_content = 1;
+  language lan = 2;
+}
+
+message GenerateTestHTMLFileForViewReportRequest {
+  string time_stamp = 1;
+  string html_file_name = 2;
+}
+
+message Empty {
+}
+
+service plagiarismDetection {
+  rpc DuplicateCheck(DuplicateCheckRequest) returns (DuplicateCheckResponse);
+  rpc ViewReport(ViewReportRequest) returns (ViewReportResponse);
+  // GenerateTestFiles 生成代码文件以作测试用
+  rpc GenerateTestFilesForDuplicateCheck(GenerateTestFilesForDuplicateCheckRequest) returns (Empty);
+  rpc RemoveTestFilesForDuplicateCheck(Empty) returns (Empty);
+  // GenerateTestFiles 生成HTML文件以作测试用
+  rpc GenerateTestHTMLFileForViewReport(GenerateTestHTMLFileForViewReportRequest) returns (Empty);
+  rpc RemoveTestHTMLFileForViewReport(Empty) returns (Empty);
+}

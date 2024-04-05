@@ -1,0 +1,42 @@
+{
+    "private": true,
+    "name": "@theia/cpp-docker-example",
+    "version": "0.0.1",
+    "license": "Apache-2.0",
+    "theia": {
+        "frontend": {
+            "config": {
+                "applicationName": "Theia C/C++ Example",
+                "preferences": {
+                    "files.enableTrash": false
+                }
+            }
+        }
+    },
+    "dependencies": {
+        "@theia/editor-preview": "latest",
+        "@theia/file-search": "latest",
+        "@theia/markers": "latest",
+        "@theia/monaco": "latest",
+        "@theia/navigator": "latest",
+        "@theia/outline-view": "latest",
+        "@theia/plugin-ext-vscode": "latest",
+        "@theia/preferences": "latest",
+        "@theia/preview": "latest",
+        "@theia/search-in-workspace": "latest",
+        "@theia/terminal": "latest",
+        "@theia/vsx-registry": "latest"
+    },
+    "devDependencies": {
+        "@theia/cli": "latest"
+    },
+    "scripts": {
+        "preinstall": "node-gyp install"
+    },
+    "theiaPluginsDir": "plugins",
+    "theiaPlugins": {
+        "vscode-builtin-cpp": "https://openvsxorg.blob.core.windows.net/resources/vscode/cpp/1.62.3/vscode.cpp-1.62.3.vsix",
+        "vscode-builtin-clang": "https://openvsxorg.blob.core.windows.net/resources/llvm-vs-code-extensions/vscode-clangd/0.1.15/llvm-vs-code-extensions.vscode-clangd-0.1.15.vsix",
+        "vscode-builtin-runner": "https://openvsxorg.blob.core.windows.net/resources/formulahendry/code-runner/0.11.7/formulahendry.code-runner-0.11.7.vsix"
+    }
+}

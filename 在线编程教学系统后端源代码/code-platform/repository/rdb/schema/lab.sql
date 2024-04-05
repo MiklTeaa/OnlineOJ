@@ -1,0 +1,12 @@
+CREATE TABLE `lab` (
+    `id` BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+    `course_id` BIGINT UNSIGNED NOT NULL,
+    `title` VARCHAR(20) NOT NULL DEFAULT '',
+    `content` TEXT NOT NULL COMMENT '实验内容描述',
+    `attachment_url` VARCHAR(500) NOT NULL DEFAULT '' COMMENT '实验附件url',
+    `dead_line` DATETIME DEFAULT NULL COMMENT '截止时间',
+    `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    `updated_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    PRIMARY KEY (`id`),
+    KEY `idx_course_id` (`course_id`)
+) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci;

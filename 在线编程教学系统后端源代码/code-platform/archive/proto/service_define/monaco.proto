@@ -1,0 +1,21 @@
+syntax = "proto3";
+
+option go_package = "/pb";
+package monaco;
+
+message Empty {
+}
+
+message ExecCodeRequest {
+  uint32 language = 1;
+  string code = 2;
+}
+
+message ExecCodeResponse {
+  string tip = 1;
+  bool success = 2;
+}
+
+service MonacoServerService {
+  rpc ExecCode(ExecCodeRequest) returns (ExecCodeResponse);
+}

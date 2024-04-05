@@ -1,0 +1,111 @@
+syntax = "proto3";
+
+option go_package = "/pb";
+package ide;
+
+message Empty {
+}
+
+message GetIDEForStudentRequest {
+  uint64 lab_id = 1;
+  uint64 student_id = 2;
+  uint32 language = 3;
+  bool can_edit = 4;
+}
+
+message GetIDEForTeacherRequest {
+  uint64 lab_id = 1;
+  uint64 student_id = 2;
+  uint64 teacher_id = 3;
+  uint32 language = 4;
+}
+
+message GetIDEResponse {
+  uint32 port = 1;
+  bool is_reused = 2;
+  string token = 3;
+}
+
+enum OrderType {
+  byTime = 0;
+  byMemory = 1;
+  byCPU = 2;
+  byDiskSize = 3;
+}
+
+message GetContainersRequest {
+  uint32 offset = 1;
+  uint32 limit = 2;
+  OrderType order = 3;
+  bool is_reverse = 4;
+}
+
+message TeacherInfo {
+  uint64 teacher_id = 1;
+}
+
+message GetContainersResponse {
+  message ContainerInfo {
+    string container_id = 1;
+    uint64 lab_id = 2;
+    uint64 student_id = 3;
+    int64 created_at = 4;
+    string size = 5;
+    TeacherInfo teacher_info = 6;
+    uint32 port = 7;
+    string cpu_perc = 8;
+    string memory_usage = 9;
+  }
+  repeated ContainerInfo container_infos = 1;
+  uint32 total = 2;
+}
+
+message StopContainerRequest {
+  string container_id = 1;
+}
+
+message QuickViewCodeRequest {
+  uint64 lab_id = 1;
+  uint64 user_id = 2;
+}
+
+message QuickViewCodeResponse {
+  message FileNode {
+    string name = 1;
+    string content = 2;
+    repeated FileNode child_nodes = 3;
+    bool is_dir = 4;
+  }
+  FileNode root_node = 1;
+}
+
+message GetContainerNamesResponse {
+  message ContainerNameInfo {
+    uint64 lab_id = 1;
+    uint64 student_id = 2;
+    TeacherInfo teacher_info = 3;
+  }
+  repeated ContainerNameInfo infos = 1;
+}
+
+message RemoveContainerRequest {
+  repeated string container_names = 1;
+}
+
+message HeartBeatStat {
+  int64 created_at = 1;
+  int64 last_visited_at = 2;
+}
+
+service IDEServerService {
+  rpc GetIDEForStudent(GetIDEForStudentRequest) returns (GetIDEResponse);
+  rpc GetIDEForTeacher(GetIDEForTeacherRequest) returns (GetIDEResponse);
+  rpc StopAllIDE(Empty) returns (Empty);
+  rpc GetContainers(GetContainersRequest) returns (GetContainersResponse);
+  rpc StopContainer(StopContainerRequest) returns (Empty);
+  rpc QuickViewCode(QuickViewCodeRequest) returns (QuickViewCodeResponse);
+  rpc GenerateTestFileForViewCode(Empty) returns (Empty);
+  rpc RemoveGenerateTestFileForViewCode(Empty) returns (Empty);
+  rpc GetContainerNames(Empty) returns (GetContainerNamesResponse);
+  rpc RemoveContainer(RemoveContainerRequest) returns (Empty);
+}
